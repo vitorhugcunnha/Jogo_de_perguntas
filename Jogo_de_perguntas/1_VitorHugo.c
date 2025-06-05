@@ -3,18 +3,20 @@
 #include <math.h>
 #include <time.h>
 #define pergunta_total 20
-#define perguntas 10
+#define perguntass 10
+#define alternativa 4
 
-typedef struct{
-    char alternativas[4][200];
-    char pergunta[200];
-    char RespostaCorreta;
-}Questoes;
+typedef struct {
+    char pergunta[pergunta_total][200];
+    char alternativas[alternativa][100];
+    char resposta_certa;
+} Questoes;
+
+void perguntasAleatorias();
 
 
-int main(){
-
-    Questoes questao[pergunta_total] = {
+int main() {
+    Questoes pergunta[pergunta_total] = {
         {"Qual simbolo e usado para indicar o fim de uma instrucao em C?", {"A) :", "B) .", "C) ;", "D) ,"}, 'C'},
         {"Qual biblioteca padrao permite entrada e saida de dados em C?", {"A) stdio.h", "B) math.h", "C) string.h", "D) stdlib.h"}, 'A'},
         {"Qual palavra-chave e usada para declarar uma constante em C?", {"A) const", "B) let", "C) static", "D) define"}, 'A'},
@@ -37,25 +39,53 @@ int main(){
         {"Qual comando permite a decisao condicional em C?", {"A) choose", "B) select", "C) if", "D) check"}, 'C'}
     };
 
-    int sort[perguntas], erros = 0, erros_tela[perguntas], contador = 0, opcoes;
+    int erros = 0, erros_tela[perguntass], contador = 0, opcoes;
 
     srand(time(NULL));
 
-    printf("================QUIZ SOBRE C=================");
-    printf("[1] - INICIAR O JOGO!");
-    printf("[2] - COMO FUNCIONA?");
-    printf("[3] - SAIR!");
-    scanf("%i", &opcoes);
 
-    switch (opcoes)
+    do
     {
-    case 1:
+        printf("================QUIZ SOBRE C=================\n");
+        printf("[1] - INICIAR O JOGO!\n");
+        printf("[2] - COMO FUNCIONA?\n");
+        printf("[3] - SAIR!\n");
+        printf("Escolha a opcao: ");
+        scanf("%i", &opcoes);
+
+        switch (opcoes)
+        {
+        case 1:
+            
+            break;
         
-        break;
-    
-    default:
-        break;
-    }
+        default:
+            break;
+        }
+    } while (opcoes != 3);
 
     return 0;
 }
+
+void perguntasAleatorias(){
+
+    for (int i = 0; i < perguntass; i++) {
+        int num, repetido, sort[perguntass];
+
+        do {
+            repetido = 0;
+            num = rand() % perguntass;
+
+            for (int j = 0; j < i; j++) {
+                if (sort[j] == num) {
+                    repetido = 1;
+                    break;
+                }
+            }
+        } while (repetido);
+
+        sort[i] = num;
+    }
+
+
+};
