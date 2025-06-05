@@ -7,13 +7,15 @@
 #define alternativa 4
 
 typedef struct {
-    char pergunta[pergunta_total][200];
+    char pergunta[200];
     char alternativas[alternativa][100];
     char resposta_certa;
 } Questoes;
 
-void perguntasAleatorias();
-
+void perguntasAleatorias(int vetor[]);
+void jogar(Questoes pergunta[]);
+void result();
+void comoFunciona();
 
 int main() {
     Questoes pergunta[pergunta_total] = {
@@ -39,53 +41,111 @@ int main() {
         {"Qual comando permite a decisao condicional em C?", {"A) choose", "B) select", "C) if", "D) check"}, 'C'}
     };
 
-    int erros = 0, erros_tela[perguntass], contador = 0, opcoes;
-
+    int opcoes;
     srand(time(NULL));
 
-
-    do
-    {
-        printf("================QUIZ SOBRE C=================\n");
+    system("cls");
+    do {
+        printf("\n============= QUIZ SOBRE C ============\n");
         printf("[1] - INICIAR O JOGO!\n");
         printf("[2] - COMO FUNCIONA?\n");
         printf("[3] - SAIR!\n");
         printf("Escolha a opcao: ");
         scanf("%i", &opcoes);
 
-        switch (opcoes)
-        {
-        case 1:
-            
-            break;
-        
-        default:
-            break;
+        switch (opcoes) {
+            case 1:
+                jogar(pergunta);
+                break;
+            case 2:
+                comoFunciona();
+                break;
+            case 3:
+                printf("Saindo...!\n");
+                break;
+            default:
+                printf("Opcao invalida! Tente novamente.\n");
+                break;
         }
     } while (opcoes != 3);
 
     return 0;
 }
 
-void perguntasAleatorias(){
 
+void perguntasAleatorias(int vetor[]) {
+    int num, repetido;
     for (int i = 0; i < perguntass; i++) {
-        int num, repetido, sort[perguntass];
-
         do {
             repetido = 0;
-            num = rand() % perguntass;
+            num = rand() % pergunta_total;
 
             for (int j = 0; j < i; j++) {
-                if (sort[j] == num) {
+                if (vetor[j] == num) {
                     repetido = 1;
                     break;
                 }
             }
         } while (repetido);
 
-        sort[i] = num;
+        vetor[i] = num;
+    }
+}
+
+void jogar(Questoes pergunta[]) {
+    system("cls");
+    int sorteio[perguntass];
+    char resposta;
+    int acertos = 0, erros = 0;
+    int erros_tela[perguntass], contador = 0;
+
+    perguntasAleatorias(sorteio);
+
+    for (int i = 0; i < perguntass; i++) {
+        int indice = sorteio[i];
+
+        printf("\nPergunta %d: %s\n", i + 1, pergunta[indice].pergunta);
+
+        for (int j = 0; j < alternativa; j++) {
+            printf("%s\n", pergunta[indice].alternativas[j]);
+        }
+
+        printf("Digite a sua resposta (A, B, C ou D): ");
+        scanf(" %c", &resposta);
+
+        if (resposta == pergunta[indice].resposta_certa || resposta == pergunta[indice].resposta_certa + 32) {
+            printf(" Resposta correta!\n");
+            acertos++;
+        } else {
+            printf(" Resposta errada! Resposta correta: %c\n", pergunta[indice].resposta_certa);
+            erros_tela[contador++] = indice;
+            erros++;
+        }
     }
 
 
-};
+
+    //Tentar quebrar o codigo nessa parte!!
+    printf("\n================== RESULTADO ==================\n");
+    printf("Acertos: %d\n", acertos);
+    printf("Erros: %d\n", erros);
+
+    if (erros > 0) {
+        printf("\nVoce errou as seguintes perguntas:\n");
+        for (int i = 0; i < contador; i++) {
+            printf("-> %s Resposta correta: %c)\n", pergunta[erros_tela[i]].pergunta, pergunta[erros_tela[i]].resposta_certa);
+        }
+    }
+
+    printf("===========================================\n");
+}
+
+void comoFunciona() {
+    system("cls");
+    printf("\n============= COMO FUNCIONA =========\n");
+    printf("-> O jogo sorteia 10 perguntas aleatorias sobre linguagem C.\n");
+    printf("-> Cada pergunta tem 4 alternativas (A, B, C, D).\n");
+    printf("-> Voce deve digitar a letra correspondente a sua resposta.\n");
+    printf("-> Ao final, o jogo mostrara quantas voce acertou e errou.\n");
+    printf("=====================================\n");
+}
