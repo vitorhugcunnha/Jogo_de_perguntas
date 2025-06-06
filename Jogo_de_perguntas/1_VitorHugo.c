@@ -14,8 +14,8 @@ typedef struct {
 
 void perguntasAleatorias(int vetor[]);
 void jogar(Questoes pergunta[]);
-void result();
 void comoFunciona();
+void resultado(int acertos, int erros, int erros_tela[], int contador, Questoes pergunta[]);
 
 int main() {
     Questoes pergunta[pergunta_total] = {
@@ -123,9 +123,10 @@ void jogar(Questoes pergunta[]) {
         }
     }
 
+    resultado(acertos, erros, erros_tela, contador, pergunta);
+}
 
-
-    //Tentar quebrar o codigo nessa parte!!
+void resultado(int acertos, int erros, int erros_tela[], int contador, Questoes pergunta[]) {
     printf("\n================== RESULTADO ==================\n");
     printf("Acertos: %d\n", acertos);
     printf("Erros: %d\n", erros);
@@ -139,6 +140,7 @@ void jogar(Questoes pergunta[]) {
 
     printf("===========================================\n");
 }
+
 
 void comoFunciona() {
     system("cls");
